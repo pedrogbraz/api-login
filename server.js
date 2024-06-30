@@ -17,5 +17,22 @@ app.post('/usuarios', async (req, res) => {
   res.status(201).json(req.body)
 })
 
+app.get('/usuarios', async (req, res) => {
+  // Listar Usuário
+  let users = []
+
+  if(req.query) {
+    users = await prisma.user.findMany({
+      where: {
+        name: req.query.name,
+        email: req.query.email,
+        age: req.query.age
+      }
+    })
+  } else {
+    users = await prisma.user.findMany()
+  }
+  res.status(202).json(users)
+})
 
 app.listen(3000)
